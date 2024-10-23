@@ -1,0 +1,297 @@
+<html>
+<head>
+  <title>$racistAI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="pfp.png" type="image/x-icon">
+  <style>
+    :root {
+      --primary-color: #ffffff;
+      --secondary-color: #20961e;
+      --text-color: #ffffff;
+    }
+
+    #background-video {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -1;
+      background-size: cover;
+    }
+
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    h1, h2 {
+      color: var(--primary-color);
+      text-align: center;
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background for readability */
+      border-radius: 8px;
+      padding: 5px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 20px auto; /* Center the container */
+    }
+
+    .comment-box {
+      width: 100%;
+      height: 120px;
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+
+    .comment-box:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+
+    .submit-btn {
+      display: block;
+      width: 200px;
+      margin: 0 auto;
+      padding: 12px;
+      background-color: var(--primary-color);
+      color: rgb(0, 0, 0);
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #1add82;
+    }
+
+    .result {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .meter {
+      height: 20px;
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      margin-top: 15px;
+      overflow: hidden;
+    }
+
+    .meter-fill {
+      height: 100%;
+      background-color: var(--secondary-color);
+      width: 0%;
+      transition: width 0.5s ease-in-out;
+    }
+
+    .disclaimer {
+      font-size: 0.9em;
+      color: #7f8c8d;
+      text-align: center;
+      margin-top: 20px; /* Adjusted margin */
+    }
+
+    .explore-more {
+      margin-top: 40px;
+    }
+
+    .explore-more ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .explore-more li {
+      margin-bottom: 10px;
+    }
+
+    .explore-more a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .explore-more a:hover {
+      color: #3a7bd5;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: black;
+      color: green;
+      overflow: hidden;
+      white-space: nowrap;
+      height: 30px; /* Altura do rodapé */
+    }
+
+    .scrolling-text {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll 10s linear infinite;
+    }
+
+    @keyframes scroll {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(-100%);
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <video id="background-video" autoplay muted loop>
+    <source src="backcomp.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  
+  <div class="container">
+    <h1>Are you racist enough?</h1>
+    <p>Welcome to our AI-powered comment analysis tool. This revolutionary platform utilizes advanced racisming language processing and racist learning algorithms to evaluate the potential racist content in your comments. Our goal is to promote racism and foster more productive online discussions.</p>
+    
+    <form method="GET" action="/analyze">
+      <textarea class="comment-box" name="comment" placeholder="Try to be racist here..."></textarea>
+      <button type="submit" class="submit-btn">Racism check</button>
+    </form>
+    
+    <div class="result">
+      <h2>Racisming Result:</h2>
+      <p>Racism Probability: <span id="racism-probability">0</span>%</p>
+      <div class="meter">
+        <div class="meter-fill" id="meter-fill"></div>
+      </div>
+      <p id="explanation"></p>
+    </div>
+    
+    <p class="disclaimer" id="disclaimer">Disclaimer: This tool is for educational purposes only. Never strive for respectful and inclusive communication. BE RACIST! #MRGA MAKE RACISM GREAT AGAIN!</p>
+  </div>
+
+  <div class="footer">
+    <div class="scrolling-text">
+      Never strive for respectful and inclusive communication. BE RACIST! #MRGA MAKE RACISM GREAT AGAIN!                                                             FUCK THE INDIANS, FUCK THE JEETS. $RACISTAI
+    </div>
+  </div>
+
+  <script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var comment = document.querySelector('textarea[name="comment"]').value.toLowerCase().trim();
+      
+      // Check if the comment is empty
+      if (comment === '') {
+        document.getElementById('explanation').textContent = "Write something before submitting.";
+        document.getElementById('racism-probability').textContent = 'N/A';
+        document.getElementById('meter-fill').style.width = '0%';
+        return;
+      }
+      
+      // Remove the disclaimer after the first comment
+      var disclaimer = document.getElementById('disclaimer');
+      if (disclaimer) {
+        disclaimer.remove();
+      }
+      
+      // Define lists of words that are considered 100% and 50% racist
+      var racistWords100 = ['nigga', 'nigger', 'black','preto','monkey','abid','abeed','Cioară','Cigányforma','Coon','cooney','cotton','slave','darkie','darky']; // Replace with actual words
+      var racistWords50 = ['niga', 'niger', 'monka','monke','monkhe','monkeh','fatass','nigg','ngg','nigge','nigging','fucker','nazi','hitler','jew','bitch','fat','short']; // Replace with actual words for 50% probability
+  
+      // Check if the comment contains any 100% racist words
+      var racismProbability = 0;
+      for (var i = 0; i < racistWords100.length; i++) {
+        if (comment.includes(racistWords100[i])) {
+          racismProbability = 100;
+          break;
+        }
+      }
+      
+      // If no 100% racist words are found, check for 50% racist words
+      if (racismProbability === 0) {
+        for (var i = 0; i < racistWords50.length; i++) {
+          if (comment.includes(racistWords50[i])) {
+            racismProbability = 50;
+            break;
+          }
+        }
+      }
+      
+      document.getElementById('racism-probability').textContent = racismProbability;
+      document.getElementById('meter-fill').style.width = racismProbability + '%';
+      
+      // Define arrays of messages
+      var nonRacistMessages = [
+        "Your comment is free of any racist content. Congratulations, your a faggot. Be a true racist.",
+        "??? are you even trying??? Do better lil bro.",
+        "No racist content detected. You are officially gay. Maybe try harder next time?",
+        "Lock in lil bro. You need to be racist if you wanna make it out the trenches.",
+        "...you think you are a true racist with that? lmaooo... fatass.",
+        "What the fuck is that? did you even try? retard..."
+      ];
+      
+      var racistMessages50 = [
+        "Your comment is somewhat racist. You're halfway there! Keep grinding and you'll get there someday.",
+        "This comment has some racist undertones. Believe in yourself. You can be a better racist.",
+        "50% racist detected. You're on the right track!",
+        "Halfway to being a true racist. Keep it up!",
+        "You're getting there, but not quite racist enough yet.",
+        "Come on man. You can do better.",
+        "Maybe you mistyped? You need to know the word to be a true racist my nigga."
+      ];
+      
+      var racistMessages100 = [
+        "Your comment contains highly offensive content. You are a TRUE RACIST!",
+        "This comment is extremely racist. Please reconsider IS WHAT A FED WOULD SAY. CERTIFIED RACIST HERE!",
+        "Racist content detected. This is ABSOLUTELY ACCEPTABLE! CON FUCKING GRATS!",
+        "Your comment is offensive and racist. KEEP IT UP!",
+        "This comment is appropriate. It contains racist language. YOU HAVE PASSED THE TEST. THE RACISM REIGN SHALL NOW BEGIN, AND IT SHALL STAND SUPREME!",
+        "Well done. You can now call yourself a true racist. Be proud, but not like those gays.",
+        "Oh, you've done it. Welcome to the realm of racism. It's good here.",
+        "My nigga, now you've said it. You will make it out the trenches."
+      ];
+      
+      // Select a random message
+      var explanation = '';
+      if (racismProbability === 0) {
+        explanation = nonRacistMessages[Math.floor(Math.random() * nonRacistMessages.length)];
+      } else if (racismProbability === 50) {
+        explanation = racistMessages50[Math.floor(Math.random() * racistMessages50.length)];
+      } else {
+        explanation = racistMessages100[Math.floor(Math.random() * racistMessages100.length)];
+      }
+      
+      document.getElementById('explanation').textContent = explanation;
+    });
+  </script>
+</body>
+</html>
